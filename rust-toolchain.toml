@@ -1,0 +1,3 @@
+[toolchain]
+# Required for #![feature(generic_const_exprs, adt_const_params)]
+channel = "nightly"
