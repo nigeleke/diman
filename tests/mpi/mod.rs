@@ -11,16 +11,16 @@ lazy_static::lazy_static! {
 }
 
 macro_rules! gen_tests_for_float {
-    ($float_name: ident) => {
-        mod $float_name {
+    ($float_type: ty) => {
+        mod $float_type {
             use crate::example_system::units::meters;
             use mpi::traits::Communicator;
 
             #[test]
             fn pack_unpack_float_quantity() {
                 let world = super::MPI_UNIVERSE.world();
-                let q1 = 1.0 as $float_name * meters;
-                let mut q2 = 2.0 as $float_name * meters;
+                let q1 = 1.0 as $float_type * meters;
+                let mut q2 = 2.0 as $float_type * meters;
                 let a = world.pack(&q1);
                 unsafe {
                     world.unpack_into(&a, &mut q2, 0);

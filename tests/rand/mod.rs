@@ -1,14 +1,14 @@
 macro_rules! gen_tests_for_float {
-    ($float_name: ident) => {
-        mod $float_name {
+    ($float_type: ty) => {
+        mod $float_type {
             use rand::Rng;
 
             use crate::example_system::dimensions::Length;
             use crate::example_system::units;
             use crate::make_annotated_unit_constructor;
 
-            make_annotated_unit_constructor!(meters, Length<$float_name>, $float_name);
-            make_annotated_unit_constructor!(kilometers, Length<$float_name>, $float_name);
+            make_annotated_unit_constructor!(meters, Length<$float_type>, $float_type);
+            make_annotated_unit_constructor!(kilometers, Length<$float_type>, $float_type);
 
             #[test]
             fn test_random_quantity_generation() {

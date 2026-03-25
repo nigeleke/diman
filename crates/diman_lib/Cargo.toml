@@ -12,6 +12,12 @@ edition.workspace = true
 [features]
 std = []
 num-traits-libm = ["num-traits/libm"]
+fastnum-d64 = ["dep:fastnum"]
+fastnum-d128 = ["dep:fastnum"]
+fastnum-d256 = ["dep:fastnum"]
+fastnum-d512 = ["dep:fastnum"]
+fastnum-d1024 = ["dep:fastnum"]
 
 [dependencies]
 num-traits = { version = "0.2.17", default-features = false }
+fastnum = { version = "0.7", default-features = false, optional = true }

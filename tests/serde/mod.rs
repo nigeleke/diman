@@ -1,28 +1,28 @@
 #[cfg(any(feature = "f32", feature = "f64"))]
 macro_rules! gen_tests_for_float {
-    ($float_name: ident, $assert_is_close: path) => {
-        mod $float_name {
+    ($float_type: ty, $assert_is_close: path) => {
+        mod $float_type {
             use crate::example_system::dimensions::{Energy, Length, Time, Velocity};
             use crate::example_system::units;
             use crate::make_annotated_unit_constructor;
             use $assert_is_close as assert_is_close;
-            make_annotated_unit_constructor!(meters, Length<$float_name>, $float_name);
-            make_annotated_unit_constructor!(kilometers, Length<$float_name>, $float_name);
-            make_annotated_unit_constructor!(seconds, Time<$float_name>, $float_name);
-            make_annotated_unit_constructor!(joules, Energy<$float_name>, $float_name);
+            make_annotated_unit_constructor!(meters, Length<$float_type>, $float_type);
+            make_annotated_unit_constructor!(kilometers, Length<$float_type>, $float_type);
+            make_annotated_unit_constructor!(seconds, Time<$float_type>, $float_type);
+            make_annotated_unit_constructor!(joules, Energy<$float_type>, $float_type);
 
             #[test]
             fn deserialize_float() {
-                let q: Length<$float_name> = serde_yaml::from_str("5.0 km").unwrap();
+                let q: Length<$float_type> = serde_yaml::from_str("5.0 km").unwrap();
                 assert_is_close(q, kilometers(5.0));
-                let q: Velocity<$float_name> = serde_yaml::from_str("5.0 km s^-1").unwrap();
+                let q: Velocity<$float_type> = serde_yaml::from_str("5.0 km s^-1").unwrap();
                 assert_is_close(q, kilometers(5.0) / seconds(1.0));
             }
 
             #[test]
             #[should_panic(expected = "mismatch in dimensions")]
             fn deserialize_float_dimension_mismatch() {
-                let q: Length<$float_name> = serde_yaml::from_str("5.0 kg").unwrap();
+                let q: Length<$float_type> = serde_yaml::from_str("5.0 kg").unwrap();
                 assert_is_close(q, kilometers(5.0));
             }
 
@@ -49,7 +49,7 @@ macro_rules! gen_tests_for_float {
 
 #[cfg(any(feature = "glam-vec2", feature = "glam-dvec2"))]
 macro_rules! gen_tests_for_vector_2 {
-    ($float_name: ident, $mod_name: ident, $vec_name: ty, $assert_is_close: path) => {
+    ($float_type: ty, $mod_name: ident, $vec_name: ty, $assert_is_close: path) => {
         mod $mod_name {
             use crate::example_system::dimensions::Length;
             use crate::example_system::units;
@@ -58,7 +58,7 @@ macro_rules! gen_tests_for_vector_2 {
             use $vec_name as Vec2;
 
             use crate::make_annotated_unit_constructor;
-            make_annotated_unit_constructor!(kilometers, Length<$float_name>, $float_name);
+            make_annotated_unit_constructor!(kilometers, Length<$float_type>, $float_type);
 
             #[test]
             fn deserialize_vector() {
@@ -98,7 +98,7 @@ macro_rules! gen_tests_for_vector_2 {
 
 #[cfg(any(feature = "glam-vec3", feature = "glam-dvec3"))]
 macro_rules! gen_tests_for_vector_3 {
-    ($float_name: ident, $mod_name: ident, $vec_name: ty, $assert_is_close: path) => {
+    ($float_type: ty, $mod_name: ident, $vec_name: ty, $assert_is_close: path) => {
         mod $mod_name {
             use crate::example_system::dimensions::Length;
             use crate::example_system::units;
@@ -107,7 +107,7 @@ macro_rules! gen_tests_for_vector_3 {
             use $vec_name as Vec3;
 
             use crate::make_annotated_unit_constructor;
-            make_annotated_unit_constructor!(kilometers, Length<$float_name>, $float_name);
+            make_annotated_unit_constructor!(kilometers, Length<$float_type>, $float_type);
 
             #[test]
             fn deserialize_vector() {

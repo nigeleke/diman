@@ -1,14 +1,14 @@
 #[cfg(any(feature = "glam-vec2", feature = "glam-dvec2"))]
 macro_rules! gen_tests_for_vector_2 {
-    ($float_name: ident, $mod_name: ident, $vec_name: ty, $assert_is_close: path) => {
+    ($float_type: ty, $mod_name: ident, $vec_name: ty, $assert_is_close: path) => {
         mod $mod_name {
             use crate::example_system::dimensions::{Length, Time};
             use crate::example_system::units::{self, meters_per_second};
             use crate::make_annotated_unit_constructor;
             use $assert_is_close as assert_is_close;
 
-            make_annotated_unit_constructor!(meters, Length<$float_name>, $float_name);
-            make_annotated_unit_constructor!(seconds, Time<$float_name>, $float_name);
+            make_annotated_unit_constructor!(meters, Length<$float_type>, $float_type);
+            make_annotated_unit_constructor!(seconds, Time<$float_type>, $float_type);
 
             use $vec_name as Vec;
             #[test]
@@ -52,15 +52,15 @@ macro_rules! gen_tests_for_vector_2 {
 
 #[cfg(any(feature = "glam-vec3", feature = "glam-dvec3"))]
 macro_rules! gen_tests_for_vector_3 {
-    ($float_name: ident, $mod_name: ident, $vec_name: ty, $assert_is_close: path) => {
+    ($float_type: ty, $mod_name: ident, $vec_name: ty, $assert_is_close: path) => {
         mod $mod_name {
             use crate::example_system::dimensions::{Length, Time};
             use crate::example_system::units::{self, meters_per_second};
             use crate::make_annotated_unit_constructor;
             use $assert_is_close as assert_is_close;
 
-            make_annotated_unit_constructor!(meters, Length<$float_name>, $float_name);
-            make_annotated_unit_constructor!(seconds, Time<$float_name>, $float_name);
+            make_annotated_unit_constructor!(meters, Length<$float_type>, $float_type);
+            make_annotated_unit_constructor!(seconds, Time<$float_type>, $float_type);
 
             use $vec_name as Vec;
             #[test]

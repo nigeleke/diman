@@ -24,8 +24,14 @@ hdf5 = []
 rational-dimensions = []
 num-traits-libm = ["diman_lib/num-traits-libm"]
 std = ["diman_lib/std"]
+fastnum-d64   = ["diman_lib/fastnum-d64"]
+fastnum-d128  =  ["diman_lib/fastnum-d128"]
+fastnum-d256  =  ["diman_lib/fastnum-d256"]
+fastnum-d512  =  ["diman_lib/fastnum-d512"]
+fastnum-d1024 =  ["diman_lib/fastnum-d1024"]
 
 default = ["f32", "f64"]
+
 
 [dependencies]
 syn = { version = "2.0", features = ["full", "extra-traits"] }

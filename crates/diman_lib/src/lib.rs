@@ -3,6 +3,7 @@
 #![feature(generic_const_exprs, adt_const_params)]
 
 pub mod dimension_exponent;
+pub mod macros;
 pub mod magnitude;
 #[cfg(any(feature = "std", feature = "num-traits-libm"))]
 pub mod ratio;
