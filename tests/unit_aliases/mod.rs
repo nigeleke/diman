@@ -1,4 +1,5 @@
 use ::diman::unit_system;
+use diman_lib::for_each_fastnum_decimal_type;
 
 unit_system!(
     quantity_type Quantity;
@@ -84,10 +85,10 @@ gen_tests_for_float!(
 );
 
 macro_rules! gen_fastnum_tests {
-    ($feature:literal, $ty:ty, $mod_name:ident) => {
+    ($feature:literal, $float_type:ty, $mod_name:ident) => {
         #[cfg(feature = $feature)]
         gen_tests_for_float!(
-            $ty,
+            $float_type,
             $mod_name,
             crate::utils::assert_is_close_fastnum,
             crate::utils::assert_is_close_float_fastnum
@@ -95,4 +96,4 @@ macro_rules! gen_fastnum_tests {
     };
 }
 
-gen_fastnum_tests!("fastnum-d64", fastnum::D64, fastnum_d64);
+for_each_fastnum_decimal_type!(gen_fastnum_tests);
