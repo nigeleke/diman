@@ -9,7 +9,11 @@ pub use num_traits::float::Float;
 #[cfg(not(feature = "num-traits-libm"))]
 pub use num_traits::float::FloatCore;
 
-use crate::for_each_fastnum_decimal_type;
+use crate::{cfg_any_fastnum_decimal_type, for_each_fastnum_decimal_type, runtime_unit_storage};
+
+cfg_any_fastnum_decimal_type! {
+    use fastnum::decimal::Decimal;
+}
 
 pub const MAX_NUM_FACTORS: usize = 10;
 
@@ -61,6 +65,12 @@ impl Magnitude {
 
     pub fn into_f32(self) -> f32 {
         self.into_f64() as f32
+    }
+
+    cfg_any_fastnum_decimal_type! {
+        pub fn into_fastnum<D>(self) -> D {
+            D::from(self.into_f64())
+        }
     }
 
     #[cfg(any(feature = "std", feature = "num-traits-libm"))]

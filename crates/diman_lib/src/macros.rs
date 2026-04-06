@@ -1,6 +1,6 @@
 #[macro_export]
-macro_rules! for_any_fastnum_decimal_type {
-    ($body: tt) => {
+macro_rules! cfg_any_fastnum_decimal_type {
+    ($($body:tt)*) => {
         #[cfg(any(
             feature = "fastnum-d64",
             feature = "fastnum-d128",
@@ -8,7 +8,7 @@ macro_rules! for_any_fastnum_decimal_type {
             feature = "fastnum-d512",
             feature = "fastnum-d1024",
         ))]
-        $body
+        $($body)*
     };
 }
 

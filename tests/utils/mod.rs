@@ -37,7 +37,7 @@ macro_rules! gen_assert_is_close_fastnum {
             y: crate::example_system::Quantity<fastnum::decimal::Decimal<N>, U>,
         ) {
             assert!(
-                (x - y).abs().value_unchecked() < fastnum::decimal::EPSILON,
+                (x - y).abs().value_unchecked().to_f64() < f64::EPSILON,
                 "{} {}",
                 x.value_unchecked(),
                 y.value_unchecked()
@@ -62,7 +62,7 @@ macro_rules! gen_assert_is_close_float_fastnum {
     ($feature:literal, $float_type:ty, $mod:ident) => {
         #[cfg(feature = $feature)]
         pub(crate) fn assert_is_close_float_fastnum(x: $float_type, y: $float_type) {
-            assert!((x - y).abs() < fastnum::decimal::EPSILON, "{} {}", x, y)
+            assert!((x - y).abs().to_f64() < f64::EPSILON, "{} {}", x, y)
         }
     };
 }

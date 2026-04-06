@@ -1,3 +1,4 @@
+use diman_lib::{cfg_any_fastnum_decimal_type, for_each_fastnum_decimal_type};
 use proc_macro2::TokenStream;
 use quote::quote;
 use syn::Type;
@@ -10,7 +11,7 @@ pub struct VectorType {
     pub num_dims: usize,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct FloatType {
     pub name: Type,
     pub conversion_method: TokenStream,
@@ -49,8 +50,15 @@ impl StorageType for FloatType {
     }
 }
 
+macro_rules! fastnum_float_type {
+    ($feature:literal, $float_type:ty, $mod_name:ident) => {
+        self.fastnum_type::<_>()
+    };
+}
+
 impl Codegen {
     pub fn storage_types(&self) -> impl Iterator<Item = Box<dyn StorageType>> {
+        println!("float_types2: {:?}", self.float_types().iter());
         self.float_types()
             .into_iter()
             .map(|x| Box::new(x) as Box<dyn StorageType>)
@@ -125,12 +133,38 @@ impl Codegen {
         }
     }
 
+    cfg_any_fastnum_decimal_type! {
+        fn fastnum_type<D>(&self) -> FloatType {
+            let fastnum_ty: Type = syn::parse2(quote! { D }).unwrap();
+            FloatType {
+                name: fastnum_ty,
+                conversion_method: quote! { into_fastnum },
+                // TODO: Determine if it makes sense to support mpi for fastnum.
+                #[cfg(feature = "mpi")]
+                mpi_type: quote! { ::mpi::ffi::RSMPI_DOUBLE },
+                // TODO: Determine if it makes sense to support hdf5 for fastnum.
+                #[cfg(feature = "hdf5")]
+                hdf5_type: quote! { hdf5::types::FloatSize::U64 },
+            }
+        }
+    }
+
     pub fn float_types(&self) -> Vec<FloatType> {
         vec![
             #[cfg(feature = "f32")]
             self.f32_type(),
             #[cfg(feature = "f64")]
             self.f64_type(),
+            #[cfg(feature = "fastnum-d64")]
+            self.fastnum_type::<fastnum::D64>(),
+            // #[cfg(feature = "fastnum-d128")]
+            // self.fastnum_type::<fastnum::D128>(),
+            // #[cfg(feature = "fastnum-d256")]
+            // self.fastnum_type::<fastnum::D256>(),
+            // #[cfg(feature = "fastnum-d512")]
+            // self.fastnum_type::<fastnum::D512>(),
+            // #[cfg(feature = "fastnum-d1024")]
+            // self.fastnum_type::<fastnum::D1024>(),
         ]
     }
 }
